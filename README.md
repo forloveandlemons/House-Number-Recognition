@@ -21,7 +21,7 @@ To train the classification model and the house number detection model, run the 
 Sample input:
 ![](input/2.png) 
 
-Sample output:
+Sample output: Output result in the format of array of length 6. The first digit represents the number of digits in the house number. The rest are the actual house number. If the number digits in the house number is fewer than 5, use 10 to fill the remaining of the array.
 ![](output/2.png)
 
 
