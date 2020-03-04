@@ -18,3 +18,13 @@ To train the classification model and the house number detection model, run the 
 7. `python run.py` will give classification and detection results from `input/` and output to `output/`
 
 
+Sample input & output:
+input:
+<img sr="input/1.png"> <img sr="output/1.png">
+<img sr="input/2.png">
+<img sr="input/3.png">
+<img sr="input/4.png">
+<img sr="input/5.png">
+
+
+
