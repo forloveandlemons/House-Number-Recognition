@@ -19,8 +19,6 @@ To train the classification model and the house number detection model, run the 
 
 
 Sample input & output:
-input:
-<img sr="input/1.png"> <img sr="output/1.png">
-![](input/1.png)
+![](input/1.png) ![](output/1.png)
 
 
