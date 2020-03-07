@@ -3,7 +3,7 @@
 Referencing paper: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42241.pdf
 
 To train the classification model and the house number detection model, run the following steps:
-1. `python prepare_data.py` to download, extract, get metadata, save data to local for training. Using [SVHN data source].(http://ufldl.stanford.edu/housenumbers/)
+1. `python prepare_data.py` to download, extract, get metadata, save data to local for training. Using [SVHN data source](http://ufldl.stanford.edu/housenumbers/)
 
 2. `python classification_train_test_split.py` to split train and test dataset for classification model training
 
