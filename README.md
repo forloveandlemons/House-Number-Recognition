@@ -1,5 +1,7 @@
 # House-Number-Recognition
 
+Given a image with house number in it, predict the saved model. 
+
 Referencing paper: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42241.pdf
 
 To train the classification model and the house number detection model, run the following steps:
