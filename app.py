@@ -57,8 +57,7 @@ def house_number_predictor():
     classification_res = requests.post('http://localhost:8501/v1/models/house_number_recognition_model:predict',
                                        data=json.dumps(classification_payload))
     raw_res = classification_res.json()['predictions'][0]
-
-
+    # process result data
     res = []
     for key in [""] + ["_" + str(i) for i in range(1, 5)]:
         new_key = "dense" + key + "/Softmax:0"
