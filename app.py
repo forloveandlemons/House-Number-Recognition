@@ -2,6 +2,7 @@ import json
 import numpy as np
 import requests
 import cv2
+import base64
 from flask import Flask, jsonify, request, redirect, render_template
 
 app = Flask(__name__, template_folder='public')
@@ -10,19 +11,27 @@ classification_input_size = 32
 
 app.config['IMAGE_UPLOADS'] = 'image_uploads'
 HOUSE_NUMBER_PREDICT_API_ENDPOINT = "http://localhost:5000/house_number_predict/predict/"
+HOUSE_NUMBER_PREDICT_ALLOWED_EXTENSIONS = {'png'}
 
 
 @app.route('/upload-image', methods=['GET', 'POST'])
 def upload_image():
+    def allowed_file(filename):
+        return '.' in filename and \
+               filename.rsplit('.', 1)[1].lower() in HOUSE_NUMBER_PREDICT_ALLOWED_EXTENSIONS
     if request.method == "POST":
         if request.files:
             image = request.files['image']
-            image_data = image.read()
-            data = {'image_data': image_data}
-            # sending post request and saving response as response object
-            res = requests.post(url=HOUSE_NUMBER_PREDICT_API_ENDPOINT, files=data)
-            return res.json()
-            # return redirect(request.url)
+            if allowed_file(image.filename):
+                # profile.save(os.path.join(uploads_dir, secure_filename(profile.filename)))
+                image_data = image.read()
+                data = {'image_data': image_data}
+                # sending post request and saving response as response object
+                res = requests.post(url=HOUSE_NUMBER_PREDICT_API_ENDPOINT, files=data)
+                return res.json()['predicted_house_number']
+                # return redirect(request.url)
+            else:
+                return "Invalid extensions"
     return render_template('upload_image.html')
 
 
@@ -31,6 +40,7 @@ def house_number_predictor():
     file = request.files['image_data']
     img_str = file.stream.read()
     np_arr = np.fromstring(img_str, np.uint8)
+    s = base64.b64encode(np_arr)
     img_raw = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     copy_raw = np.copy(img_raw)
     img = cv2.resize(img_raw, (detection_input_size, detection_input_size), interpolation=cv2.INTER_AREA)
@@ -65,5 +75,5 @@ def house_number_predictor():
         if predicted_digit != 10:
             res.append(str(np.argmax(raw_res[new_key])))
     text = "".join(res)
-    return_val = {"predicted_house_number":text}
+    return_val = {"predicted_house_number": text}
     return jsonify(return_val)

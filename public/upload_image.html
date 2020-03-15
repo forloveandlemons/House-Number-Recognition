@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />-->
+    <!--<script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>-->
     <title>Title</title>
 	<style type="text/css">
 		header {
@@ -23,25 +25,95 @@
 		}
 
 		.container {
-			width: 600px;
+			width: 800px;
 			margin: 0 auto;
-			margin-top: 75px;
+			margin-top: 10px;
 			font-family: 'Nanum Myeongjo', sans-serif;
 			text-align: center;
 		}
+
+		.split {
+          width: 50%;
+          position: fixed;
+          z-index: 1;
+          top: 200px;
+          overflow-x: hidden;
+          padding-top: 20px;
+        }
+
+        .left {
+          left: 0px;
+        }
+
+        .right {
+          right: 0px;
+        }
+
+        .centered {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          <!--transform: translate(-50%, -50%);-->
+          text-align: center;
+        }
+
+        .centered img {
+          width: 150px;
+          border-radius: 50%;
+        }
+
 	</style>
 </head>
 <body>
     <div class="container">
-        <h1>Upload image</h1>
-        <form action="/upload-image", method="POST" enctype="multipart/form-data">
+        <h1>House Number Extraction</h1>
+        <form action="/upload-image" method="POST" enctype="multipart/form-data" id="myForm">
             <div class="custom-file">
                 <label class="custom-file-label" for="image">Select image...</label>
-                <input type="file" class="custom-file-input" name="image" id="image">
-                <input type="submit" value="Upload image">
+                <input type="file" class="custom-file-input" name="image" id="image" onchange="readURL(this);" />
+                <input type="submit" value="Upload image" />
             </div>
-            <!--<button type="submit" class="btn btn-primary">Upload Image</button>-->
         </form>
+        <hr>
     </div>
+
+    <div class="container">
+        <h2> Input image</h2>
+        <img id="test_img" src="#" alt="your image" />
+    </div>
+
+    <div class="container">
+        <h2 id="result"></h2>
+    </div>
+
+    <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script>
+        // wait for the DOM to be loaded
+        $(document).ready(function() {
+            // bind 'myForm' and provide a simple callback function
+            $('#myForm').ajaxForm(function(response) {
+                var res = document.getElementById("result");
+                if (response == "Invalid extensions") {
+                    res.innerHTML = "Only accept images with '.png' extensions.";
+                } else {
+                    res.innerHTML = "prediction result: " + response;
+                }
+            });
+        });
+    </script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#test_img')
+                        .attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </body>
 </html>
