@@ -1,8 +1,16 @@
 # House-Number-Recognition
 
-Given a image with house number in it, predict the saved model. 
+Given a image with house number in it, predict the house number. 
 
 Referencing paper: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/42241.pdf
+
+
+Serving the tensorflow model:
+docker run -t --rm -p 8501:8501 -v "$(pwd)/:/models/" tensorflow/serving --model_config_file=/models/models.config --model_config_file_poll_wait_seconds=60
+
+Kicking off the flask server:
+export FLASK_ENV=development && flask run
+
 
 To train the classification model and the house number detection model, run the following steps:
 1. `python prepare_data.py` to download, extract, get metadata, save data to local for training. Using [SVHN data source](http://ufldl.stanford.edu/housenumbers/)
